@@ -24,7 +24,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center gap-2 hover:text-[#F2CDA1]">
                     <IoLogoLinkedin />
-                    <a href="https://www.linkedin.com/in/ruimbarroso">Rui Barroso</a>
+                    <a href="https://www.linkedin.com/in/rui-barroso-1a179b306/">Rui Barroso</a>
                 </div>
             </div>
         </footer>

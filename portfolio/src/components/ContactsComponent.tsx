@@ -53,7 +53,7 @@ const ContactsComponent = () => {
           <div className="flex items-center gap-3 group transition-colors">
             <IoLogoLinkedin className="text-white group-hover:text-[#F2CDA1]" />
             <a
-              href="https://www.linkedin.com/in/ruimbarroso"
+              href="https://www.linkedin.com/in/rui-barroso-1a179b306/"
               className="text-white group-hover:text-[#F2CDA1] transition-colors"
               target="_blank"
               rel="noopener noreferrer"

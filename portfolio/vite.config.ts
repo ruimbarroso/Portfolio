@@ -9,7 +9,7 @@ export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss(), visualizer()],
   build: {
-    outDir: path.resolve(__dirname, '../output'), // Adjust this to your parent folder
+    outDir: path.resolve(__dirname, '../docs'), // Adjust this to your parent folder
     emptyOutDir: true
   }
 })

@@ -1,0 +1,110 @@
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { db } from "../firebase/firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
+
+import HomeComponent from "../components/HomeComponent";
+import { AppContext, type AppState, type Experience, type Project, type Skill } from "./types";
+
+
+
+const AppProvider = ({ children }: { children: ReactNode }) => {
+  const [element, setElement] = useState<ReactNode>(<HomeComponent />);
+  const [state, setState] = useState<AppState>({
+    homeContent: null,
+    skills: null,
+    experiences: null,
+    projects: null
+  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [homeContent, skills, experiences, projects] = await Promise.all([
+          fetchHomeContent(),
+          fetchSkills(),
+          fetchExperience(),
+          fetchProjects()
+        ]);
+
+        setState({ homeContent, skills, experiences, projects });
+      } catch (error) {
+        console.error("Error Loading App Data:", error);
+        setState({
+          homeContent: [],
+          skills: [],
+          experiences: [],
+          projects: []
+        });
+      }
+    };
+
+    fetchData();
+  });
+
+  const fetchHomeContent = useCallback(async (): Promise<string[]> => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "home"));
+
+      if (!querySnapshot.empty) {
+        const docData = querySnapshot.docs[0].data();
+        return Object.values(docData) as string[];
+      }
+    } catch (error) {
+      console.error("Error fetching home content:", error);
+    }
+
+    return []
+  }, []);
+  const fetchSkills = useCallback(async (): Promise<Skill[]> => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "skills"));
+
+      if (!querySnapshot.empty) {
+        const docs = querySnapshot.docs.map((doc) => doc.data() as Skill);
+        return docs;
+      }
+    } catch (error) {
+      console.error("Error fetching skills:", error);
+    }
+    return [];
+  }, []);
+  const fetchExperience = useCallback(async (): Promise<Experience[]> => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "experience"));
+
+      if (!querySnapshot.empty) {
+        const docs = querySnapshot.docs.map((doc) =>
+          doc.data() as Experience
+        );
+        return docs;
+      }
+    } catch (error) {
+      console.error("Error fetching experiences:", error);
+    }
+    return [];
+  }, []);
+  const fetchProjects = useCallback(async (): Promise<Project[]> => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "projects"));
+
+      if (!querySnapshot.empty) {
+        const docs = querySnapshot.docs.map(
+          (doc) => doc.data() as Project
+        );
+        return docs;
+      }
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+    return [];
+  }, []);
+  return (
+    <AppContext.Provider value={{
+      element, setElement, state: state
+    }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+
+export default AppProvider;

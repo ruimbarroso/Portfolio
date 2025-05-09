@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { db } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 
@@ -15,9 +15,12 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     experiences: null,
     projects: null
   });
+
+  const isDataLoaded = useRef(false)
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (isDataLoaded.current) return;
         const [homeContent, skills, experiences, projects] = await Promise.all([
           fetchHomeContent(),
           fetchSkills(),
@@ -34,11 +37,14 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
           experiences: [],
           projects: []
         });
+      } finally {
+        console.log(isDataLoaded.current ? "Loading Data again..." : "Loading Data...");
+        isDataLoaded.current = true;
       }
     };
 
     fetchData();
-  });
+  }, []);
 
   const fetchHomeContent = useCallback(async (): Promise<string[]> => {
     try {

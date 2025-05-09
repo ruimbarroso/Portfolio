@@ -1,1 +1,0 @@
-import{r as e}from"./index-DYMCy0Z2.js";const o=e.createContext(void 0),n=()=>{const t=e.useContext(o);if(!t)throw new Error("useAppContext must be used within an AppProvider");return t};export{o as A,n as u};

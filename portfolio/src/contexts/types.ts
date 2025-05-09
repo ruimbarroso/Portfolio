@@ -5,6 +5,7 @@ export interface Experience { title: string; description: string; tasks: string[
 export interface Project { title: string; description: string; link: string }
 
 export interface AppState {
+  resumeUrl: string|null;
   homeContent: string[] | null,
   skills: Skill[] | null,
   experiences: Experience[] | null,

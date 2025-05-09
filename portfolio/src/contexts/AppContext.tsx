@@ -10,6 +10,7 @@ import { AppContext, type AppState, type Experience, type Project, type Skill } 
 const AppProvider = ({ children }: { children: ReactNode }) => {
   const [element, setElement] = useState<ReactNode>(<HomeComponent />);
   const [state, setState] = useState<AppState>({
+    resumeUrl: null,
     homeContent: null,
     skills: null,
     experiences: null,
@@ -21,17 +22,19 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     const fetchData = async () => {
       try {
         if (isDataLoaded.current) return;
-        const [homeContent, skills, experiences, projects] = await Promise.all([
+        const [resumeUrl, homeContent, skills, experiences, projects] = await Promise.all([
+          fetchResumeUrl(),
           fetchHomeContent(),
           fetchSkills(),
           fetchExperience(),
           fetchProjects()
         ]);
 
-        setState({ homeContent, skills, experiences, projects });
+        setState({ resumeUrl, homeContent, skills, experiences, projects });
       } catch (error) {
         console.error("Error Loading App Data:", error);
         setState({
+          resumeUrl: "#",
           homeContent: [],
           skills: [],
           experiences: [],
@@ -46,6 +49,21 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     fetchData();
   }, []);
 
+  const fetchResumeUrl = useCallback(async (): Promise<string> => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "resume"));
+
+      if (!querySnapshot.empty) {
+        const docData = querySnapshot.docs[0].data();
+        console.log("Data: ", docData);
+        return docData.url as unknown as string;
+      }
+    } catch (error) {
+      console.error("Error fetching home content:", error);
+    }
+
+    return "#"
+  }, []);
   const fetchHomeContent = useCallback(async (): Promise<string[]> => {
     try {
       const querySnapshot = await getDocs(collection(db, "home"));

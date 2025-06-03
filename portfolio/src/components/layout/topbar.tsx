@@ -5,12 +5,14 @@ import HomeComponent from "../HomeComponent";
 import ProjectsComponent from "../ProjectsComponent";
 import SkillsComponent from "../SkillsComponent";
 import { useAppContext } from "../../contexts/types";
+import EducationComponent from "../EducationComponent";
 
 
 const pages = [
     { name: "Skills", element: <SkillsComponent /> },
     { name: "Experience", element: <ExperiencesComponent /> },
     { name: "Projects", element: <ProjectsComponent /> },
+    { name: "Education", element: <EducationComponent /> },
     { name: "Contact", element: <ContactsComponent /> },
 ];
 

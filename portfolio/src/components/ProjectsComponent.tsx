@@ -1,26 +1,11 @@
-import { useEffect, useState } from "react";
-import { LoadingPoints } from "./widgets/LoadingPoints";
 import { useAppContext } from "../contexts/types";
+import ContentContainer from "./ContentContainer";
 
 const ProjectsComponent = () => {
 const { state } = useAppContext();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(state.projects === null);
-  }, [state]);
-
   return (
-    <div className="w-full sm:w-[50vw] p-6 sm:p-12 flex justify-center items-start h-full">
-      <div className="flex flex-col gap-8 pb-4">
-        <h1 className="text-3xl font-bold border-b-2 border-[#F2CDA1] pb-2">
-          Projects
-        </h1>
-
-        {isLoading ? (
-          <LoadingPoints />
-        ) : (
-          <ul className="space-y-6">
+    <ContentContainer label="Projects" isLoading={state.projects===null}>
+      <ul className="space-y-6">
             {state.projects?.map((project, i) => (
               <li
                 key={i}
@@ -45,9 +30,7 @@ const { state } = useAppContext();
               </li>
             ))}
           </ul>
-        )}
-      </div>
-    </div>
+    </ContentContainer>
   );
 };
 export default ProjectsComponent;

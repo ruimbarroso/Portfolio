@@ -4,16 +4,11 @@ import {
   IoLogoGithub,
   IoLogoLinkedin,
 } from "react-icons/io5";
+import ContentContainer from "./ContentContainer";
 
 const ContactsComponent = () => {
-  return (
-    <div className="w-full sm:w-[50vw] p-6 sm:p-12 flex justify-center items-start">
-      <div className="flex flex-col gap-6 w-full">
-        <h1 className="text-3xl font-bold border-b-2 border-[#F2CDA1] pb-2">
-          Contact
-        </h1>
-
-        <div className="flex flex-col space-y-4 text-lg">
+  return <ContentContainer label="Contacts" isLoading={false}>
+      <div className="flex flex-col space-y-4 text-lg">
           {/* Phone */}
           <div className="flex items-center gap-3 group transition-colors">
             <IoCallOutline className="text-white group-hover:text-[#F2CDA1]" />
@@ -62,9 +57,7 @@ const ContactsComponent = () => {
             </a>
           </div>
         </div>
-      </div>
-    </div>
-  );
+    </ContentContainer>;
 };
 
 export default ContactsComponent;

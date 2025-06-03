@@ -1,26 +1,12 @@
-import { useEffect, useState } from "react";
-import { LoadingPoints } from "./widgets/LoadingPoints";
 import { useAppContext } from "../contexts/types";
+import ContentContainer from "./ContentContainer";
 
 const ExperiencesComponent = () => {
   const { state } = useAppContext();
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(state.experiences === null);
-  }, [state]);
 
-  return (
-    <div className="w-full sm:w-[50vw] p-6 sm:p-12 flex justify-center items-start h-full">
-      <div className="flex flex-col gap-8 pb-4">
-        <h1 className="text-3xl font-bold border-b-2 border-[#F2CDA1] pb-2">
-          Experience
-        </h1>
-
-        {isLoading ? (
-          <LoadingPoints />
-        ) : (
-          <ul className="space-y-6">
+  return <ContentContainer label="Experience" isLoading={state.experiences===null}>
+      <ul className="space-y-6">
             {state.experiences?.map((experience, i) => (
               <li
                 key={i}
@@ -45,10 +31,7 @@ const ExperiencesComponent = () => {
               </li>
             ))}
           </ul>
-        )}
-      </div>
-    </div>
-  );
+    </ContentContainer>;
 };
 
 export default ExperiencesComponent;

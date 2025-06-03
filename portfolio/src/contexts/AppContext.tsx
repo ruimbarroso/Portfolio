@@ -3,9 +3,7 @@ import { db } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 
 import HomeComponent from "../components/HomeComponent";
-import { AppContext, type AppState, type Experience, type Project, type Skill } from "./types";
-
-
+import { AppContext, type AppState, type College, type Course, type Experience, type Project, type Skill } from "./types";
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
   const [element, setElement] = useState<ReactNode>(<HomeComponent />);
@@ -14,6 +12,8 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     homeContent: null,
     skills: null,
     experiences: null,
+    colleges: null,
+    courses: null,
     projects: null
   });
 
@@ -22,15 +22,17 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     const fetchData = async () => {
       try {
         if (isDataLoaded.current) return;
-        const [resumeUrl, homeContent, skills, experiences, projects] = await Promise.all([
+        const [resumeUrl, homeContent, skills, experiences, projects, colleges, courses] = await Promise.all([
           fetchResumeUrl(),
           fetchHomeContent(),
           fetchSkills(),
           fetchExperience(),
-          fetchProjects()
+          fetchProjects(),
+          fetchColleges(),
+          fetchCourses()
         ]);
 
-        setState({ resumeUrl, homeContent, skills, experiences, projects });
+        setState({ resumeUrl, homeContent, skills, experiences, projects, colleges, courses });
       } catch (error) {
         console.error("Error Loading App Data:", error);
         setState({
@@ -38,7 +40,9 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
           homeContent: [],
           skills: [],
           experiences: [],
-          projects: []
+          projects: [],
+          colleges: [],
+          courses: [],
         });
       } finally {
         console.log(isDataLoaded.current ? "Loading Data again..." : "Loading Data...");
@@ -121,6 +125,33 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     }
     return [];
   }, []);
+  const fetchColleges = useCallback(async (): Promise<College[]> => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "colleges"));
+
+      if (!querySnapshot.empty) {
+        const docs = querySnapshot.docs.map((doc) => doc.data() as College);
+        return docs;
+      }
+    } catch (error) {
+      console.error("Error fetching skills:", error);
+    }
+    return [];
+  }, []);
+  const fetchCourses = useCallback(async (): Promise<Course[]> => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "courses"));
+
+      if (!querySnapshot.empty) {
+        const docs = querySnapshot.docs.map((doc) => doc.data() as Course);
+        return docs;
+      }
+    } catch (error) {
+      console.error("Error fetching skills:", error);
+    }
+    return [];
+  }, []);
+
   return (
     <AppContext.Provider value={{
       element, setElement, state: state

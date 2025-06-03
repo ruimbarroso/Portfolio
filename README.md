@@ -3,8 +3,7 @@
 **Software Engineer | Backend & Mobile Development Enthusiast**  
 📍 Setúbal, Portugal  
 📧 rmpereirab@gmail.com | 📞 +351 919 762 092  
-🌐 [Personal Website](https://ruimbarroso.github.io/Portfolio/)  
-📱 [LinkedIn](https://www.linkedin.com/in/rui-barroso-1a179b306/)
+🌐 [Personal Website](https://ruimbarroso.github.io/Portfolio/)  | 📱 [LinkedIn](https://www.linkedin.com/in/rui-barroso-1a179b306/)
 
 ---
 
